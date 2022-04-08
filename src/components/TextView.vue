@@ -1,16 +1,18 @@
 <script setup>
-import { ref } from 'vue'
-
-const count = ref(0)
+import { ref, inject, computed } from "vue";
+const selectedGeo = inject("selectedGeo");
+const selectedGeoReactive = computed(() => {
+  return selectedGeo.value;
+});
+// return { selectedGeoReactive };
 </script>
 
 <template>
-<div>
+  <div>
     <div class="box-title">Text View</div>
-</div>
-
+    {{ selectedGeo }}
+  </div>
 </template>
 
 <style lang="less" scoped>
-
 </style>

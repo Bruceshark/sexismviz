@@ -3,6 +3,13 @@ import MapView from "./components/MapView.vue";
 import TextView from "./components/TextView.vue";
 import DBView from "./components/DBView.vue";
 import RegView from "./components/RegView.vue";
+import { provide, ref } from "vue";
+const selectedGeo = ref();
+const updateSelectedGeo = (val) => {
+  selectedGeo.value = val;
+};
+provide("selectedGeo", selectedGeo);
+provide("updateSelectedGeo", updateSelectedGeo);
 </script>
 
 <template>
@@ -67,21 +74,21 @@ import RegView from "./components/RegView.vue";
     background: white;
     height: 495px;
     .box-title {
-        font-weight: bold;
-        line-height: 24px;
-        font-size: 18px;
-        position: relative;
+      font-weight: bold;
+      line-height: 24px;
+      font-size: 18px;
+      position: relative;
     }
     .box-title::after {
-        background-color: #c92268;
-        opacity: 0.3;
-        content: "";
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        right: 0;
-        height: 8px;
-        width: 80px;
+      background-color: #c92268;
+      opacity: 0.3;
+      content: "";
+      position: absolute;
+      bottom: 0px;
+      left: 0;
+      right: 0;
+      height: 8px;
+      width: 80px;
     }
   }
 }
