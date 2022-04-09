@@ -1,10 +1,6 @@
 <script setup>
 import { ref, inject, computed } from "vue";
 const selectedGeo = inject("selectedGeo");
-const selectedGeoReactive = computed(() => {
-  return selectedGeo.value;
-});
-// return { selectedGeoReactive };
 </script>
 
 <template>
