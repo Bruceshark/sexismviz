@@ -1,14 +1,168 @@
 <script setup>
-import { ref, inject, computed } from "vue";
+import * as d3 from "d3";
+import { ref, inject, computed, onMounted, watch } from "vue";
+import wordData from "../assets/word_divergence.json";
 const selectedGeo = inject("selectedGeo");
+const selectedWordData = computed(
+  () => wordData.filter((ele) => ele.region === selectedGeo.value)[0].word_list
+);
+const canvas_width = 800;
+const canvas_height = 400;
+const hoveredWordEntropy = ref(null);
+const maxSexismColor = "#c20051";
+const minBothColor = "#c9bbc1";
+const maxNonSexismColor = "#0d00c2";
+const drawChart = () => {
+  //画布大小
+  //画布周边的空白
+  const padding = { left: 0, right: 30, top: 30, bottom: 30 };
+  const font_size = 15;
+  const width = canvas_width - padding.left - padding.right;
+  const height = canvas_height - padding.top - padding.bottom;
+  const colorLevelSexism = d3.interpolateRgb(
+    d3.rgb(minBothColor),
+    d3.rgb(maxSexismColor)
+  );
+  const colorLevelNonSexism = d3.interpolateRgb(
+    d3.rgb(minBothColor),
+    d3.rgb(maxNonSexismColor)
+  );
+
+  var svg = d3
+    .select("#wordChartSvg")
+    .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+  var xScale = d3
+    .scaleBand()
+    .padding(0.3)
+    .domain(d3.range(selectedWordData.value.length))
+    .range([0, width]);
+  svg
+    .append("g")
+    .attr("transform", "translate(0," + height / 2 + ")")
+    .call(d3.axisBottom(xScale))
+    .selectAll("text")
+    .remove();
+
+  var yScale = d3.scaleLinear().domain([0, 1.8]).range([height, 0]);
+  svg.append("g").call(d3.axisLeft(yScale));
+  var g = svg
+    .selectAll("mybar")
+    .data(selectedWordData.value)
+    .enter()
+    .append("g");
+    
+  g.append("rect")
+    .attr("x", function (d, i) {
+      return xScale(i);
+    })
+    .attr("y", function (d, i) {
+      return d.label ? yScale(d.value) - height / 2 : height / 2;
+    })
+    .attr("width", xScale.bandwidth())
+    .attr("height", function (d) {
+      return height - yScale(d.value);
+    })
+    .attr("fill", function (d) {
+      return d.label
+        ? colorLevelSexism(d.entropy)
+        : colorLevelNonSexism(d.entropy);
+    })
+    .on("mouseover", function (d, i) {
+      const pointerHeight = (i.entropy * canvas_height) / 2;
+      if (i.label === 1) {
+        hoveredWordEntropy.value = canvas_height / 2 - pointerHeight;
+      } else {
+        hoveredWordEntropy.value = canvas_height / 2 + pointerHeight;
+      }
+    })
+    .on("mouseout", function () {
+        hoveredWordEntropy.value = null
+    })
+    .style("cursor", "pointer");
+
+  g.append("text")
+    .attr("x", function (d, i) {
+      return xScale(i) + xScale.bandwidth() / 2;
+    })
+    .attr("y", function (d, i) {
+      return d.label
+        ? yScale(d.value) - height / 2 - 5
+        : (height * 3) / 2 - yScale(d.value) + font_size;
+    })
+    .text(function (d, i) {
+      return d.word;
+    })
+    .style("text-anchor", "middle");
+};
+watch(
+  () => selectedGeo.value,
+  (val) => {
+    d3.select("#wordChartSvg").selectAll("svg > *").remove();
+    drawChart();
+  }
+);
+onMounted(() => {
+  drawChart();
+});
 </script>
 
 <template>
-  <div>
+  <div style="width: 100%; height: 100%">
     <div class="box-title">Text View</div>
     {{ selectedGeo }}
+    <div class="chart-outer">
+      <svg y="0" :height="canvas_height" width="80">
+        <text x="0" :y="canvas_height / 4">Sexism</text>
+        <text x="0" :y="(canvas_height * 3) / 4">Non-Sexism</text>
+      </svg>
+      <svg :height="canvas_height" width="10">
+        <polygon
+         v-if="hoveredWordEntropy"
+          :points="
+            '0,' +
+            (hoveredWordEntropy - 2.5)+
+            ' 10,' +
+            (hoveredWordEntropy + 2.5) +
+            ' 0,' +
+            (hoveredWordEntropy + 7.5)
+          "
+        />
+      </svg>
+      <svg id="wordLegend" :height="canvas_height" width="20">
+        <defs>
+          <linearGradient id="legend" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop
+              offset="0%"
+              :style="'stop-color:' + maxSexismColor + ';stop-opacity:1'"
+            />
+            <stop
+              offset="50%"
+              :style="'stop-color:' + minBothColor + ';stop-opacity:1'"
+            />
+            <stop
+              offset="100%"
+              :style="'stop-color:' + maxNonSexismColor + ';stop-opacity:1'"
+            />
+          </linearGradient>
+        </defs>
+        <g>
+          <rect
+            :height="canvas_height"
+            x="5"
+            width="10"
+            fill="url(#legend)"
+          ></rect>
+        </g>
+      </svg>
+      <svg id="wordChartSvg" :height="canvas_height" :width="canvas_width" />
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped>
+.chart-outer {
+  width: 100%;
+  height: 90%;
+}
 </style>

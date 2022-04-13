@@ -1,0 +1,47 @@
+[
+    {
+      "region": "China",
+      "word_list": [
+        {"word": "男权", "value": 0.8, "entropy" :0.123, "label": 1},
+        {"word": "女权", "value": 0.6, "entropy" :0.63, "label": 1},
+        {"word": "田园", "value": 0.44, "entropy" :0.123, "label": 1},
+        {"word": "社会", "value": 0.34, "entropy" :0.23, "label": 1},
+        {"word": "女拳", "value": 0.32, "entropy" :0.123, "label": 1},
+        {"word": "平等", "value": 0.3, "entropy" :0.23, "label": 1},
+        {"word": "婚女", "value": 0.299, "entropy" :0.123, "label": 1},
+        {"word": "证据", "value": 0.299, "entropy" :0.23, "label": 0},
+        {"word": "事情", "value": 0.28, "entropy" :0.123, "label": 0},
+        {"word": "xxx", "value": 0.26, "entropy" :0.23, "label": 0},
+        {"word": "xxxxx", "value": 0.27, "entropy" :0.123, "label": 1},
+        {"word": "xxx", "value": 0.23, "entropy" :0.23, "label": 1},
+        {"word": "xxxxx", "value": 0.2, "entropy" :0.123, "label": 1},
+        {"word": "xxx", "value": 0.18, "entropy" :0.23, "label": 0},
+        {"word": "xxxxx", "value": 0.14, "entropy" :0.123, "label": 1},
+        {"word": "xxx", "value": 0.12, "entropy" :0.23, "label": 1},
+        {"word": "xxxxx", "value": 0.11, "entropy" :0.123, "label": 1},
+        {"word": "xxx", "value": 0.1, "entropy" :0.23, "label": 1},
+        {"word": "xxxxx", "value": 0.1, "entropy" :0.123, "label": 0}
+      ]
+    },
+    {
+      "region": "Shanghai",
+      "word_list": [
+        {"word": "x", "value": 0.51, "entropy" :0.123},
+        {"word": "xx", "value": 0.5, "entropy" :0.123}
+      ]
+    },
+    {
+      "region": "Beijing",
+      "word_list": [
+        {"word": "男权", "value": 0.8, "entropy" :0.123, "label": 1},
+        {"word": "女权", "value": 0.5, "entropy" :0.63, "label": 1},
+        {"word": "田园", "value": 0.4, "entropy" :0.123, "label": 1},
+        {"word": "社会", "value": 0.3, "entropy" :0.23, "label": 1},
+        {"word": "女拳", "value": 0.32, "entropy" :0.123, "label": 1},
+        {"word": "平等", "value": 0.3, "entropy" :0.23, "label": 1},
+        {"word": "婚女", "value": 0.299, "entropy" :0.123, "label": 1},
+        {"word": "证据", "value": 0.299, "entropy" :0.23, "label": 0},
+        {"word": "事情", "value": 0.28, "entropy" :0.123, "label": 0}
+      ]
+    }
+  ]
