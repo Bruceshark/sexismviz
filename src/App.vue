@@ -4,7 +4,7 @@ import TextView from "./components/TextView.vue";
 import DBView from "./components/DBView.vue";
 import RegView from "./components/RegView.vue";
 import { provide, ref } from "vue";
-const selectedGeo = ref();
+const selectedGeo = ref("China");
 const updateSelectedGeo = (val) => {
   selectedGeo.value = val;
 };

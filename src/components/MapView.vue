@@ -27,14 +27,14 @@ const extraGeo = [
 const selectedGeo = inject("selectedGeo");
 const updateSelectedGeo = inject("updateSelectedGeo");
 const hoveredGeo = ref("China");
-const mapMaxColor = "#c9bbc1";
-const mapMinColor = "#c20051";
+const mapMinColor = "#c9bbc1";
+const mapMaxColor = "#c20051";
 const drawMap = () => {
   const width = 700,
     height = 430;
   const colorLevelMap = d3.interpolateRgb(
-    d3.rgb(mapMaxColor),
-    d3.rgb(mapMinColor)
+    d3.rgb(mapMinColor),
+    d3.rgb(mapMaxColor)
   );
   const projection = geo
     .geoMercator()
@@ -45,7 +45,7 @@ const drawMap = () => {
 
   const maxValue = Math.max(...Object.values(sexismRatioMap));
   const minValue = Math.min(...Object.values(sexismRatioMap));
-//   china map
+  //   china map
   d3.select("#chinaMap")
     .append("svg")
     .attr("width", width)
@@ -58,19 +58,26 @@ const drawMap = () => {
     .attr("id", function (d, i) {
       return d.properties.name;
     })
+    .style("cursor", "pointer")
     .on("click", function (d, i) {
       updateSelectedGeo(this.id);
     })
     .on("mouseover", function (d, i) {
+      d3.select("#" + this.id).style("stroke-width", "3px");
       hoveredGeo.value = this.id;
+    })
+    .on("mouseout", function (d, i) {
+      d3.select("#" + hoveredGeo.value).style("stroke-width", "0px");
     })
     .style("fill", function (d, i) {
       const normalizedRatio =
         (sexismRatioMap[d.properties.name] - minValue) / (maxValue - minValue);
       return colorLevelMap(normalizedRatio);
     })
+    .style("stroke", "gold")
+    .style("stroke-width", "0px")
     .attr("d", path);
-// extra svgs: china and overseas
+  // extra svgs: china and overseas
   d3.select("#chinaMap")
     .select("svg")
     .append("g")
@@ -82,6 +89,7 @@ const drawMap = () => {
     .attr("d", function (d, i) {
       return d.svgPath;
     })
+    .style("cursor", "pointer")
     .attr("transform", function (d, i) {
       return `translate(${i * 1024}, 0)`;
     })
