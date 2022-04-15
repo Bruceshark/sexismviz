@@ -32,10 +32,10 @@ provide("updateSelectedGeo", updateSelectedGeo);
       </div>
     </a-row>
     <a-row class="row">
-      <div class="box" style="width: 740px">
+      <div class="box" style="width: 940px">
         <DBView />
       </div>
-      <div class="box" style="width: 1140px">
+      <div class="box" style="width: 940px">
         <RegView />
       </div>
     </a-row>

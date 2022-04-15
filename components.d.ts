@@ -6,6 +6,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     ACol: typeof import('ant-design-vue/es')['Col']
     ARow: typeof import('ant-design-vue/es')['Row']
+    ATable: typeof import('ant-design-vue/es')['Table']
     DBView: typeof import('./src/components/DBView.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     MapView: typeof import('./src/components/MapView.vue')['default']
