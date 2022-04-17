@@ -6,19 +6,17 @@ const selectedGeo = inject("selectedGeo");
 const selectedWordData = computed(
   () => wordData.filter((ele) => ele.region === selectedGeo.value)[0].word_list
 );
-const canvas_width = 800;
-const canvas_height = 400;
+const canvasWidth = 800;
+const canvasHeight = 400;
+const padding = { left: 0, right: 30, top: 30, bottom: 30 };
 const hoveredWordEntropy = ref(null);
 const maxSexismColor = "#c20051";
 const minBothColor = "#c9bbc1";
 const maxNonSexismColor = "#0d00c2";
 const drawChart = () => {
-  //画布大小
-  //画布周边的空白
-  const padding = { left: 0, right: 30, top: 30, bottom: 30 };
   const font_size = 15;
-  const width = canvas_width - padding.left - padding.right;
-  const height = canvas_height - padding.top - padding.bottom;
+  const width = canvasWidth - padding.left - padding.right;
+  const height = canvasHeight - padding.top - padding.bottom;
   const colorLevelSexism = d3.interpolateRgb(
     d3.rgb(minBothColor),
     d3.rgb(maxSexismColor)
@@ -44,14 +42,14 @@ const drawChart = () => {
     .selectAll("text")
     .remove();
 
-  var yScale = d3.scaleLinear().domain([0, 1.8]).range([height, 0]);
+  var yScale = d3.scaleLinear().domain([0, 2.3]).range([height, 0]);
   svg.append("g").call(d3.axisLeft(yScale));
   var g = svg
     .selectAll("mybar")
     .data(selectedWordData.value)
     .enter()
     .append("g");
-    
+
   g.append("rect")
     .attr("x", function (d, i) {
       return xScale(i);
@@ -69,15 +67,15 @@ const drawChart = () => {
         : colorLevelNonSexism(d.entropy);
     })
     .on("mouseover", function (d, i) {
-      const pointerHeight = (i.entropy * canvas_height) / 2;
+      const pointerHeight = (i.entropy * (canvasHeight - padding.top)) / 2;
       if (i.label === 1) {
-        hoveredWordEntropy.value = canvas_height / 2 - pointerHeight;
+        hoveredWordEntropy.value = canvasHeight / 2 - pointerHeight;
       } else {
-        hoveredWordEntropy.value = canvas_height / 2 + pointerHeight;
+        hoveredWordEntropy.value = canvasHeight / 2 + pointerHeight;
       }
     })
     .on("mouseout", function () {
-        hoveredWordEntropy.value = null
+      hoveredWordEntropy.value = null;
     })
     .style("cursor", "pointer");
 
@@ -112,16 +110,16 @@ onMounted(() => {
     <div class="box-title">Text View</div>
     {{ selectedGeo }}
     <div class="chart-outer">
-      <svg y="0" :height="canvas_height" width="80">
-        <text x="0" :y="canvas_height / 4">Sexism</text>
-        <text x="0" :y="(canvas_height * 3) / 4">Non-Sexism</text>
+      <svg y="0" :height="canvasHeight" width="80">
+        <text x="0" :y="canvasHeight / 4">Sexism</text>
+        <text x="0" :y="(canvasHeight * 3) / 4">Non-Sexism</text>
       </svg>
-      <svg :height="canvas_height" width="10">
+      <svg :height="canvasHeight" width="10">
         <polygon
-         v-if="hoveredWordEntropy"
+          v-if="hoveredWordEntropy"
           :points="
             '0,' +
-            (hoveredWordEntropy - 2.5)+
+            (hoveredWordEntropy - 2.5) +
             ' 10,' +
             (hoveredWordEntropy + 2.5) +
             ' 0,' +
@@ -129,7 +127,7 @@ onMounted(() => {
           "
         />
       </svg>
-      <svg id="wordLegend" :height="canvas_height" width="20">
+      <svg id="wordLegend" :height="canvasHeight" width="20">
         <defs>
           <linearGradient id="legend" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop
@@ -148,14 +146,15 @@ onMounted(() => {
         </defs>
         <g>
           <rect
-            :height="canvas_height"
+            :height="canvasHeight - padding.top"
+            :y="padding.top / 2"
             x="5"
             width="10"
             fill="url(#legend)"
           ></rect>
         </g>
       </svg>
-      <svg id="wordChartSvg" :height="canvas_height" :width="canvas_width" />
+      <svg id="wordChartSvg" :height="canvasHeight" :width="canvasWidth" />
     </div>
   </div>
 </template>
