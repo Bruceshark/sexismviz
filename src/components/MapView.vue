@@ -60,14 +60,18 @@ const drawMap = () => {
     })
     .style("cursor", "pointer")
     .on("click", function (d, i) {
+      d3.select("#" + selectedGeo.value).style("stroke-width", "0px");
       updateSelectedGeo(this.id);
+      d3.select("#" + this.id).style("stroke-width", "3px");
     })
     .on("mouseover", function (d, i) {
       d3.select("#" + this.id).style("stroke-width", "3px");
       hoveredGeo.value = this.id;
     })
     .on("mouseout", function (d, i) {
-      d3.select("#" + hoveredGeo.value).style("stroke-width", "0px");
+      if (hoveredGeo.value !== selectedGeo.value) {
+        d3.select("#" + hoveredGeo.value).style("stroke-width", "0px");
+      }
     })
     .style("fill", function (d, i) {
       const normalizedRatio =
