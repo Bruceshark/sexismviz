@@ -6,15 +6,15 @@ const selectedGeo = inject("selectedGeo");
 const selectedWordData = computed(
   () => wordData.filter((ele) => ele.region === selectedGeo.value)[0].word_list
 );
-const canvasWidth = 800;
+const canvasWidth = 980;
 const canvasHeight = 400;
 const padding = { left: 0, right: 30, top: 30, bottom: 30 };
+const font_size = 15;
 const hoveredWordEntropy = ref(null);
 const maxSexismColor = "#c20051";
 const minBothColor = "#c9bbc1";
 const maxNonSexismColor = "#0d00c2";
 const drawChart = () => {
-  const font_size = 15;
   const width = canvasWidth - padding.left - padding.right;
   const height = canvasHeight - padding.top - padding.bottom;
   const colorLevelSexism = d3.interpolateRgb(
@@ -43,7 +43,6 @@ const drawChart = () => {
     .remove();
 
   var yScale = d3.scaleLinear().domain([0, 2.3]).range([height, 0]);
-  svg.append("g").call(d3.axisLeft(yScale));
   var g = svg
     .selectAll("mybar")
     .data(selectedWordData.value)
@@ -108,7 +107,6 @@ onMounted(() => {
 <template>
   <div style="width: 100%; height: 100%">
     <div class="box-title">Text View</div>
-    {{ selectedGeo }}
     <div class="chart-outer">
       <svg y="0" :height="canvasHeight" width="80">
         <text x="0" :y="canvasHeight / 4">Sexism</text>
@@ -145,16 +143,23 @@ onMounted(() => {
           </linearGradient>
         </defs>
         <g>
+          <text x="0" :y="padding.top">1</text>
+          <text x="0" :y="(padding.top + canvasHeight - 15) / 2">0</text>
+          <text x="0" :y="canvasHeight - 15">1</text>
           <rect
             :height="canvasHeight - padding.top"
             :y="padding.top / 2"
-            x="5"
+            x="10"
             width="10"
             fill="url(#legend)"
           ></rect>
         </g>
       </svg>
       <svg id="wordChartSvg" :height="canvasHeight" :width="canvasWidth" />
+      <div style="text-align: right; font-style: italic">
+        Height = Jensen-Shannon divergence <br />
+        Shade of Color = Shannon index
+      </div>
     </div>
   </div>
 </template>
