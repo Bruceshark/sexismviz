@@ -9,7 +9,7 @@ const selectedWordData = computed(
 const canvasWidth = 980;
 const canvasHeight = 400;
 const padding = { left: 0, right: 30, top: 30, bottom: 30 };
-const font_size = 15;
+const fontSize = 15;
 const hoveredWordEntropy = ref(null);
 const maxSexismColor = "#c20051";
 const minBothColor = "#c9bbc1";
@@ -85,7 +85,7 @@ const drawChart = () => {
     .attr("y", function (d, i) {
       return d.label
         ? yScale(d.value) - height / 2 - 5
-        : (height * 3) / 2 - yScale(d.value) + font_size;
+        : (height * 3) / 2 - yScale(d.value) + fontSize;
     })
     .text(function (d, i) {
       return d.word;
@@ -106,7 +106,7 @@ onMounted(() => {
 
 <template>
   <div style="width: 100%; height: 100%">
-    <div class="box-title">Text View</div>
+    <div class="box-title">Text View - {{selectedGeo}}</div>
     <div class="chart-outer">
       <svg y="0" :height="canvasHeight" width="80">
         <text x="0" :y="canvasHeight / 4">Sexism</text>
