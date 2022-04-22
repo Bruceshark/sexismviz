@@ -8,6 +8,7 @@ const selectedGeo = ref("China");
 const updateSelectedGeo = (val) => {
   selectedGeo.value = val;
 };
+const showTeamInfo = ref(false);
 provide("selectedGeo", selectedGeo);
 provide("updateSelectedGeo", updateSelectedGeo);
 </script>
@@ -16,11 +17,13 @@ provide("updateSelectedGeo", updateSelectedGeo);
   <div class="outer">
     <a-row>
       <div class="header">
-        <span class="title">SexismViz</span>
-        <img
-          class="logo"
-          src="https://upload.wikimedia.org/wikipedia/zh/4/46/Sina_Weibo_logo.svg"
-        />
+        <div style="display: flex">
+          <span class="title">SexismViz</span>
+          <img class="logo" src="./assets/logo.svg" />
+        </div>
+        <div class="team-logo" @click="() => (showTeamInfo = true)">
+          <img class="logo" src="./assets/team.svg" />
+        </div>
       </div>
     </a-row>
     <a-row class="row" style="margin-bottom: 15px">
@@ -39,6 +42,45 @@ provide("updateSelectedGeo", updateSelectedGeo);
         <RegView />
       </div>
     </a-row>
+    <a-modal
+      v-model:visible="showTeamInfo"
+      :footer="null"
+      title="More Info..."
+      @ok="() => (showTeamInfo = false)"
+    >
+      <h3>Project</h3>
+      <p>This website is the final project of SOSC 4300 of Group 1.</p>
+      <h3>Team & Contribution</h3>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Work</th>
+        </tr>
+        <tr>
+          <td>CHEN Jingruo</td>
+          <td>Regression analysis</td>
+        </tr>
+        <tr>
+          <td>LIU Junde</td>
+          <td>NLP model</td>
+        </tr>
+        <tr>
+          <td>WANG Yiwei</td>
+          <td>Word divergence analysis</td>
+        </tr>
+        <tr>
+          <td>
+            <a
+              href="http://yyubv.student.ust.hk"
+              style="color: #003f63"
+              target="_window"
+              >YU Yue</a
+            >
+          </td>
+          <td>Data visualization design & development</td>
+        </tr>
+      </table>
+    </a-modal>
   </div>
 </template>
 
@@ -53,13 +95,26 @@ provide("updateSelectedGeo", updateSelectedGeo);
 }
 .header {
   height: 60px;
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   .title {
     font-weight: bold;
     font-size: 25px;
     line-height: 60px;
     margin: 0 10px;
     color: @primaryColor;
+  }
+  .team-logo {
+    display: flex;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 0 10px;
+    margin-right: 30px;
+  }
+  .team-logo:hover {
+    cursor: pointer;
+    background: rgb(214, 214, 214);
   }
 }
 
@@ -91,5 +146,16 @@ provide("updateSelectedGeo", updateSelectedGeo);
       width: 80px;
     }
   }
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }
 </style>

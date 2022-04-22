@@ -16,7 +16,7 @@ const minBothColor = "#c9bbc1";
 const maxNonSexismColor = "#0d00c2";
 const drawChart = () => {
   const width = canvasWidth - padding.left - padding.right;
-  const height = canvasHeight - padding.top - padding.bottom;
+  const height = canvasHeight;
   const colorLevelSexism = d3.interpolateRgb(
     d3.rgb(minBothColor),
     d3.rgb(maxSexismColor)
@@ -28,7 +28,8 @@ const drawChart = () => {
 
   var svg = d3
     .select("#wordChartSvg")
-    .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+    .attr("transform", "translate(" + padding.left + "," + 0 + ")");
+    // .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
   var xScale = d3
     .scaleBand()
@@ -37,7 +38,7 @@ const drawChart = () => {
     .range([0, width]);
   svg
     .append("g")
-    .attr("transform", "translate(0," + height / 2 + ")")
+    .attr("transform", "translate(0," + (height / 2) + ")")
     .call(d3.axisBottom(xScale))
     .selectAll("text")
     .remove();
@@ -76,7 +77,6 @@ const drawChart = () => {
     .on("mouseout", function () {
       hoveredWordEntropy.value = null;
     })
-    .style("cursor", "pointer");
 
   g.append("text")
     .attr("x", function (d, i) {
@@ -155,7 +155,7 @@ onMounted(() => {
           ></rect>
         </g>
       </svg>
-      <svg id="wordChartSvg" :height="canvasHeight" :width="canvasWidth" />
+      <svg id="wordChartSvg" :height="canvasHeight" :width="canvasWidth" y="0"/>
       <div style="text-align: right; font-style: italic">
         Height = Jensen-Shannon divergence <br />
         Shade of Color = Shannon index
