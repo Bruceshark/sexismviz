@@ -45,6 +45,42 @@ const drawMap = () => {
 
   const maxValue = Math.max(...Object.values(sexismRatioMap));
   const minValue = Math.min(...Object.values(sexismRatioMap));
+  const handleClickGeo = (newName) => {
+    if (selectedGeo.value === "China" || selectedGeo.value === "Overseas") {
+      d3.select("#" + selectedGeo.value).style(
+        "fill",
+        colorLevelMap(sexismRatioMap[selectedGeo.value])
+      );
+    } else {
+      d3.select("#" + selectedGeo.value).style("stroke-width", "0px");
+    }
+    updateSelectedGeo(newName);
+    if (newName === "China" || newName === "Overseas") {
+      d3.select("#" + newName).style("fill", "gold");
+    } else {
+      d3.select("#" + newName).style("stroke-width", "3px");
+    }
+  };
+  const handleHoverGeo = (newName) => {
+    hoveredGeo.value = newName;
+    if (newName === "China" || newName === "Overseas") {
+      d3.select("#" + newName).style("fill", "gold");
+    } else {
+      d3.select("#" + newName).style("stroke-width", "3px");
+    }
+  };
+  const handleHoverLeaveGeo = () => {
+    if (hoveredGeo.value !== selectedGeo.value) {
+      if (hoveredGeo.value === "China" || hoveredGeo.value === "Overseas") {
+        d3.select("#" + hoveredGeo.value).style(
+          "fill",
+          colorLevelMap(sexismRatioMap[hoveredGeo.value])
+        );
+      } else {
+        d3.select("#" + hoveredGeo.value).style("stroke-width", "0px");
+      }
+    }
+  };
   //   china map
   d3.select("#chinaMap")
     .append("svg")
@@ -60,18 +96,13 @@ const drawMap = () => {
     })
     .style("cursor", "pointer")
     .on("click", function (d, i) {
-      d3.select("#" + selectedGeo.value).style("stroke-width", "0px");
-      updateSelectedGeo(this.id);
-      d3.select("#" + this.id).style("stroke-width", "3px");
+      handleClickGeo(this.id);
     })
     .on("mouseover", function (d, i) {
-      d3.select("#" + this.id).style("stroke-width", "3px");
-      hoveredGeo.value = this.id;
+      handleHoverGeo(this.id);
     })
     .on("mouseout", function (d, i) {
-      if (hoveredGeo.value !== selectedGeo.value) {
-        d3.select("#" + hoveredGeo.value).style("stroke-width", "0px");
-      }
+      handleHoverLeaveGeo();
     })
     .style("fill", function (d, i) {
       const normalizedRatio =
@@ -93,18 +124,28 @@ const drawMap = () => {
     .attr("d", function (d, i) {
       return d.svgPath;
     })
+    .attr("id", function (d, i) {
+      return d.name;
+    })
     .style("cursor", "pointer")
     .attr("transform", function (d, i) {
       return `translate(${i * 1024}, 0)`;
     })
     .style("fill", function (d, i) {
-      return colorLevelMap(sexismRatioMap[d.name]);
+      if (d.name === hoveredGeo.value) {
+        return "gold";
+      } else {
+        return colorLevelMap(sexismRatioMap[d.name]);
+      }
     })
     .on("mouseover", function (d, i) {
-      hoveredGeo.value = i.name;
+      handleHoverGeo(this.id);
     })
     .on("click", function (d, i) {
-      updateSelectedGeo(i.name);
+      handleClickGeo(this.id);
+    })
+    .on("mouseout", function (d, i) {
+      handleHoverLeaveGeo();
     });
 };
 onMounted(() => {
