@@ -159,8 +159,13 @@ onMounted(() => {
     <div class="map-outer">
       <div id="chinaMap"></div>
     </div>
-    <div style="font-weight: bold">
-      {{ hoveredGeo }}: {{ sexismRatioMap[hoveredGeo] }}
+    <div style="display: flex; justify-content: space-between">
+      <div>
+        {{ hoveredGeo }}: {{ sexismRatioMap[hoveredGeo] }}
+      </div>
+      <div style="font-weight: bold">
+        selected region: {{selectedGeo}}
+      </div>
     </div>
   </div>
 </template>
