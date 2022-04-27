@@ -105,6 +105,11 @@ onMounted(() => {
 <template>
   <div style="width: 100%; height: 100%">
     <div v-show="selectedGeo === 'China'">
+      <div>
+        <a-button type="primary" @click="() => (showTopicReport = true)"
+          >Interactive Report</a-button
+        >
+      </div>
       <div class="chart-outer">
         <svg
           id="topicChartSvg"
@@ -113,10 +118,7 @@ onMounted(() => {
           y="0"
         />
       </div>
-      <div style="display: flex; justify-content: space-between">
-        <a-button type="primary" @click="() => (showTopicReport = true)"
-          >Interactive Report</a-button
-        >
+      <div style="text-align: right">
         <div style="font-style: italic">Height = Word probability</div>
       </div>
     </div>
@@ -145,7 +147,7 @@ onMounted(() => {
       @ok="() => (showTopicReport = false)"
     >
       <iframe
-        src="/topic_report.html"
+        src="topic_report.html"
         style="width: 1600px; height: 800px"
       ></iframe>
       <a
