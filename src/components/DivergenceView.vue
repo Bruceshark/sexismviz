@@ -106,7 +106,6 @@ onMounted(() => {
 
 <template>
   <div style="width: 100%; height: 100%">
-    <div class="box-title">Text View - {{selectedGeo}}</div>
     <div class="chart-outer">
       <svg y="0" :height="canvasHeight" width="80">
         <text x="0" :y="canvasHeight / 4">Sexism</text>
@@ -157,8 +156,7 @@ onMounted(() => {
       </svg>
       <svg id="wordChartSvg" :height="canvasHeight" :width="canvasWidth" y="0"/>
       <div style="text-align: right; font-style: italic">
-        Height = Jensen-Shannon divergence <br />
-        Shade of Color = Shannon index
+        Height = Jensen-Shannon divergence; Shade of Color = Shannon index
       </div>
     </div>
   </div>

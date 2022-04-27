@@ -1,6 +1,7 @@
 <script setup>
 import MapView from "./components/MapView.vue";
-import TextView from "./components/TextView.vue";
+import DivergenceView from "./components/DivergenceView.vue";
+import TopicView from "./components/TopicView.vue";
 import DBView from "./components/DBView.vue";
 import RegView from "./components/RegView.vue";
 import { provide, ref } from "vue";
@@ -9,6 +10,7 @@ const updateSelectedGeo = (val) => {
   selectedGeo.value = val;
 };
 const showTeamInfo = ref(false);
+const DivergenceViewKey = ref("1");
 provide("selectedGeo", selectedGeo);
 provide("updateSelectedGeo", updateSelectedGeo);
 </script>
@@ -30,8 +32,18 @@ provide("updateSelectedGeo", updateSelectedGeo);
       <div class="box" style="width: 740px">
         <MapView />
       </div>
-      <div class="box" style="width: 1140px">
-        <TextView />
+      <div class="box" style="width: 1140px; padding-top: 0;">
+        <a-tabs v-model:activeKey="DivergenceViewKey" style="height: 100%">
+          <a-tab-pane key="1" tab="LDA Topics" style="height: 100%; overflow: scroll">
+            <TopicView  style="height: 100%; overflow: scroll"/>
+          </a-tab-pane>
+          <a-tab-pane key="2" tab="Word divergence" forceRender>
+            <DivergenceView />
+          </a-tab-pane>
+          <template #leftExtra>
+            <div class="box-title" style="margin-right: 30px">Text View</div>
+          </template>
+        </a-tabs>
       </div>
     </a-row>
     <a-row class="row">
@@ -103,7 +115,7 @@ provide("updateSelectedGeo", updateSelectedGeo);
     font-size: 25px;
     line-height: 60px;
     margin: 0 10px;
-    color: @primaryColor;
+    color: #c92268;
   }
   .team-logo {
     display: flex;
@@ -157,5 +169,8 @@ th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+.ant-tabs-content-holder {
+  overflow: scroll;
 }
 </style>
