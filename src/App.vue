@@ -8,6 +8,9 @@ import { provide, ref } from "vue";
 const selectedGeo = ref("China");
 const updateSelectedGeo = (val) => {
   selectedGeo.value = val;
+  if (val !== "China") {
+    DivergenceViewKey.value = "2";
+  }
 };
 const showTeamInfo = ref(false);
 const DivergenceViewKey = ref("1");
@@ -32,10 +35,14 @@ provide("updateSelectedGeo", updateSelectedGeo);
       <div class="box" style="width: 740px">
         <MapView />
       </div>
-      <div class="box" style="width: 1140px; padding-top: 0;">
+      <div class="box" style="width: 1140px; padding-top: 0">
         <a-tabs v-model:activeKey="DivergenceViewKey" style="height: 100%">
-          <a-tab-pane key="1" tab="LDA Topics" style="height: 100%; overflow: scroll">
-            <TopicView  style="height: 100%; overflow: scroll"/>
+          <a-tab-pane
+            key="1"
+            tab="LDA Topics"
+            style="height: 100%; overflow: scroll"
+          >
+            <TopicView style="height: 100%; overflow: scroll" />
           </a-tab-pane>
           <a-tab-pane key="2" tab="Word divergence" forceRender>
             <DivergenceView />
