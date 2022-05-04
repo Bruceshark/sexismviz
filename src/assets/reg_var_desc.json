@@ -1,0 +1,47 @@
+{
+    "Sexist": {
+        "class": "categorical",
+        "coding": "0 = non-sexism, 1 = sexism",
+        "mean": 0.413,
+        "std": 0.493,
+        "max": 1,
+        "min": 0
+    },
+    "Gender": {
+        "class": "categorical",
+        "coding": "0 = male, 1 = female",
+        "mean": 0.653,
+        "std": 0.476,
+        "max": 1,
+        "min": 0
+    },
+    "Sentiment": {
+        "class": "coninuous",
+        "coding": "0 = most negative, 1 = most positive",
+        "mean": 0.823,
+        "std": 0.345,
+        "max": 1,
+        "min": 0
+    },
+    "LikeNum": {
+        "class": "coninuous",
+        "mean": 313.944,
+        "std": 3277.068,
+        "max": 110632,
+        "min": 0
+    },
+    "RepostNum": {
+        "class": "coninuous",
+        "mean": 37.369,
+        "std": 254.544,
+        "max": 7888,
+        "min": 0
+    },
+    "CommentNum": {
+        "class": "coninuous",
+        "mean": 29.037,
+        "std": 96.886,
+        "max": 1,
+        "min": 1723
+    }
+}

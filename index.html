@@ -5,6 +5,27 @@
     <link rel="icon" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SexismViz</title>
+    <link rel="dns-prefetch" href="//cdn.mathjax.org" />
+    <script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">
+        if(MathJax){
+          MathJax.Hub.Config({
+            jax: ["input/TeX","output/HTML-CSS", "output/PreviewHTML"],
+            tex2jax: {
+              inlineMath: [['$','$']],
+              displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+            },
+            "HTML-CSS": {
+              showMathMenu: false, 
+              linebreaks: {
+                automatic: true,
+                width: "80%"
+              }
+            },
+            displayAlign: "left"
+          });
+        }
+    </script>
   </head>
   <body>
     <div id="app"></div>
