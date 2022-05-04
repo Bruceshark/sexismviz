@@ -4,6 +4,7 @@ import { ref, inject, computed, onMounted, watch } from "vue";
 import topicList from "../assets/lda_topics.json";
 const selectedGeo = inject("selectedGeo");
 const showTopicReport = ref(false);
+const showSectionInfo = ref(false);
 const singleChartHeight = 50;
 const singleChartMargin = 20;
 const canvasWidth = 1100;
@@ -105,10 +106,15 @@ onMounted(() => {
 <template>
   <div style="width: 100%; height: 100%">
     <div v-show="selectedGeo === 'China'">
-      <div>
-        <a-button type="primary" @click="() => (showTopicReport = true)"
-          >Interactive Report</a-button
-        >
+      <div class="box-header" style="justify-content: space-between">
+        <div>
+          <a-button type="primary" @click="() => (showTopicReport = true)"
+            >Interactive Report</a-button
+          >
+        </div>
+        <div class="question-logo" @click="() => (showSectionInfo = true)">
+          <img src="../assets/question.svg" />
+        </div>
       </div>
       <div class="chart-outer">
         <svg
@@ -117,9 +123,6 @@ onMounted(() => {
           :width="canvasWidth"
           y="0"
         />
-      </div>
-      <div style="text-align: right">
-        <div style="font-style: italic">Height = Word probability</div>
       </div>
     </div>
     <div
@@ -155,6 +158,26 @@ onMounted(() => {
         target="_window"
         >Tool: pyLDAvis</a
       >
+    </a-modal>
+    <a-modal
+      v-model:visible="showSectionInfo"
+      :footer="null"
+      title="LDA Topic Modeling"
+      @ok="() => (showSectionInfo = false)"
+    >
+      <p>
+        To explore the topics of all Weibo comments, we used LDA topic Modeling
+        to find the topic categories. Similarly, we split the sentences using
+        the Pkuseg package and applied the Genism package to run the LDA model.
+        Before running the topic model, we used the Coherence model in the
+        Genism package to find the best number of topics based on the coherence
+        score of topics in each model. For the convenience of presenting the
+        visualized results, we chose the topic number to be 12. In the topic
+        modeling plot, we presented the top 20 words of the 12 topics with word
+        probabilities (height). And we used the pyLDAvis package to show the
+        interactive visualization of topic models, you can view the interactive
+        report by clicking the “Interactive report” button.
+      </p>
     </a-modal>
   </div>
 </template>

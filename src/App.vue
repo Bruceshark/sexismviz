@@ -78,7 +78,7 @@ provide("updateSelectedGeo", updateSelectedGeo);
         </tr>
         <tr>
           <td>WANG Yiwei</td>
-          <td>Word divergence analysis</td>
+          <td>Word divergence & LDA analysis</td>
         </tr>
         <tr>
           <td>
@@ -129,7 +129,6 @@ provide("updateSelectedGeo", updateSelectedGeo);
     background: rgb(214, 214, 214);
   }
 }
-
 .logo {
   width: 30px;
 }
@@ -156,6 +155,20 @@ provide("updateSelectedGeo", updateSelectedGeo);
       right: 0;
       height: 8px;
       width: 80px;
+    }
+    .box-header {
+      height: 25px;
+      width: 100%;
+      display: flex;
+      .question-logo {
+        display: flex;
+        border-radius: 5px;
+        padding: 0 5px;
+      }
+      .question-logo:hover {
+        cursor: pointer;
+        background: rgb(214, 214, 214);
+      }
     }
   }
 }
