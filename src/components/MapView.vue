@@ -151,22 +151,42 @@ const drawMap = () => {
 onMounted(() => {
   drawMap();
 });
+const showSectionInfo = ref(false);
 </script>
 
 <template>
   <div style="width: 100%; height: 100%">
-    <div class="box-title">Map View</div>
+    <div class="box-header" style="justify-content: space-between">
+      <div class="box-title">Map View</div>
+      <div class="question-logo" @click="() => (showSectionInfo = true)">
+        <img src="../assets/question.svg" />
+      </div>
+    </div>
+
     <div class="map-outer">
       <div id="chinaMap"></div>
     </div>
     <div style="display: flex; justify-content: space-between">
-      <div>
-        {{ hoveredGeo }}: {{ sexismRatioMap[hoveredGeo] }}
-      </div>
-      <div style="font-weight: bold">
-        selected region: {{selectedGeo}}
-      </div>
+      <div>{{ hoveredGeo }}: {{ sexismRatioMap[hoveredGeo] }}</div>
+      <div style="font-weight: bold">selected region: {{ selectedGeo }}</div>
     </div>
+    <a-modal
+      v-model:visible="showSectionInfo"
+      :footer="null"
+      title="Geospatial Analysis"
+      @ok="() => (showSectionInfo = false)"
+    >
+      <p>
+        The regions on the map are hoverable and clickable, and you are free to
+        choose any province/municipality/area to further focus on the
+        corresponding text analysis of that region. In the upper left corner,
+        you can select China as a whole or Overseas. We also calculated the
+        sexist ratio for each region, which equals the number of posts predicted
+        as Sexism divided by the number of all posts published by the users from
+        that region. The ratios are encoded on the map: the darker shading
+        indicates the higher sexist ratio.
+      </p>
+    </a-modal>
   </div>
 </template>
 
