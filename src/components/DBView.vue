@@ -26,7 +26,7 @@ const columns = [
     key: "sexism",
     filters: [
       {
-        text: "sexism",
+        text: "Sexism",
         value: 1,
       },
       {
@@ -88,11 +88,17 @@ const columns = [
     sorter: (a, b) => a.user_follower - b.user_follower,
   },
 ];
+const showSectionInfo = ref(false);
 </script>
 
 <template>
   <div style="width: 100%; height: 100%; overflow: scroll">
-    <div class="box-title">Database View</div>
+    <div class="box-header" style="justify-content: space-between">
+      <div class="box-title">Database View</div>
+      <div class="question-logo" @click="() => (showSectionInfo = true)">
+        <img src="../assets/question.svg" />
+      </div>
+    </div>
     <br />
     <a-table :dataSource="dataSource" :columns="columns">
       <template #expandedRowRender="{ record }">
@@ -101,6 +107,29 @@ const columns = [
         </p>
       </template>
     </a-table>
+    <a-modal
+      v-model:visible="showSectionInfo"
+      :footer="null"
+      title="Dataset"
+      @ok="() => (showSectionInfo = false)"
+    >
+      <p>
+        • The table shows the data we used in our study. You can click the
+        “plus” icon on the left of every record to unfold the text and read the
+        content of every post. You can also browse the data by filtering
+        categorical variables and sorting the continuous variables. <br />• For
+        the variable "Sexism", we trained a neural network on a labeled Sexist
+        language dataset, mainly consisting of Weibo comments, and have it
+        predict the sexism label for our dataset. Prior to training the neural
+        network, certain transformations were carried out to the text including
+        tokenization and one-hot-encoding, to which end a dictionary was
+        compiled so as to give reference when describing the relative positions
+        of characters in each sentence. <br />
+        • After parameter tuning, the model did manage to score an 81.5%
+        accuracy on the validation data we had held out in training. Feel free
+        to click around and judge on yourself!
+      </p>
+    </a-modal>
   </div>
 </template>
 
