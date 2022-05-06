@@ -168,9 +168,11 @@ provide("updateSelectedGeo", updateSelectedGeo);
       width: 100%;
       display: flex;
       .question-logo {
-        display: flex;
         border-radius: 5px;
         padding: 0 5px;
+        img {
+          width: 20px
+        }
       }
       .question-logo:hover {
         cursor: pointer;

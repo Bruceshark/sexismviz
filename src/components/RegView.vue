@@ -210,6 +210,6 @@ const isLoadingReg = ref(false);
   margin: 10px 0;
 }
 .var-selector {
-  width: 140px;
+  width: 170px;
 }
 </style>
