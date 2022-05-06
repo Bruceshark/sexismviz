@@ -113,13 +113,27 @@ const drawMap = () => {
     .style("stroke-width", "0px")
     .attr("d", path);
   // extra svgs: china and overseas
-  d3.select("#chinaMap")
+  const icons = d3
+    .select("#chinaMap")
     .select("svg")
     .append("g")
-    .attr("transform", "scale(0.05)")
     .selectAll("path")
     .data(extraGeo)
-    .enter()
+    .enter();
+  icons
+    .append("text")
+    .attr("x", function (d, i) {
+      return i * 45 + 5;
+    })
+    .attr("y", function (d, i) {
+      return 70;
+    })
+    .text(function (d, i) {
+      return d.name;
+    });
+  icons
+    .append("g")
+    .attr("transform", "scale(0.05)")
     .append("path")
     .attr("d", function (d, i) {
       return d.svgPath;
@@ -177,14 +191,14 @@ const showSectionInfo = ref(false);
       @ok="() => (showSectionInfo = false)"
     >
       <p>
-        The regions on the map are hoverable and clickable, and you are free to
-        choose any province/municipality/area to further focus on the
+        • The regions on the map are hoverable and clickable, and you are free
+        to choose any province/municipality/area to further focus on the
         corresponding text analysis of that region. In the upper left corner,
-        you can select China as a whole or Overseas. We also calculated the
+        you can select China as a whole or Overseas. <br />• We calculated the
         sexist ratio for each region, which equals the number of posts predicted
         as Sexism divided by the number of all posts published by the users from
-        that region. The ratios are encoded on the map: the darker shading
-        indicates the higher sexist ratio.
+        that region. <br />• The ratios are encoded as the shading on the map:
+        the darker shading indicates the higher sexist ratio.
       </p>
     </a-modal>
   </div>
