@@ -23,25 +23,33 @@
         "max": 1,
         "min": 0
     },
-    "LikeNum": {
+    "log(FollowerNum)": {
         "class": "coninuous",
-        "mean": 313.944,
-        "std": 3277.068,
-        "max": 110632,
+        "coding": "records with FollowerNum greater than 10,000 are trimmed",
+        "mean": 5.882,
+        "std": 1.803,
+        "max": 9.195,
+        "min": 0.693
+    },
+    "log(LikeNum)": {
+        "class": "coninuous",
+        "mean": 1.892,
+        "std": 1.595,
+        "max": 10.140,
         "min": 0
     },
-    "RepostNum": {
+    "log(RepostNum)": {
         "class": "coninuous",
-        "mean": 37.369,
-        "std": 254.544,
-        "max": 7888,
+        "mean": 0.575,
+        "std": 1.077,
+        "max": 7.449,
         "min": 0
     },
-    "CommentNum": {
+    "log(CommentNum)": {
         "class": "coninuous",
-        "mean": 29.037,
-        "std": 96.886,
-        "max": 1,
-        "min": 1723
+        "mean": 1.775,
+        "std": 0.903,
+        "max": 6.996,
+        "min": 0.693
     }
 }

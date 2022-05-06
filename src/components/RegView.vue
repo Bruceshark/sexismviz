@@ -3,18 +3,19 @@ import { reactive, ref, nextTick, onMounted, inject } from "vue";
 import regResList from "../assets/reg_results.json";
 import regVarDesc from "../assets/reg_var_desc.json";
 const selectedGeo = inject("selectedGeo");
-const ivList = ref(["Sexist", "no", "no"]);
-const dv = ref("CommentNum");
+const ivList = ref(["Sentiment", "no", "no"]);
+const dv = ref("log(CommentNum)");
 const ivOptions = ref([
   { value: "Sentiment", label: "Sentiment" },
   { value: "Gender", label: "Gender" },
   { value: "Sexist", label: "Sexist" },
+  { value: "log(FollowerNum)", label: "log(FollowerNum)" },
   { value: "no", label: "--" },
 ]);
 const dvOptions = ref([
-  { value: "LikeNum", label: "LikeNum" },
-  { value: "CommentNum", label: "CommentNum" },
-  { value: "RepostNum", label: "RepostNum" },
+  { value: "log(LikeNum)", label: "log(LikeNum)" },
+  { value: "log(CommentNum)", label: "log(CommentNum)" },
+  { value: "log(RepostNum)", label: "log(RepostNum)" },
   { value: "no", label: "--" },
 ]);
 const selectIV = () => {
@@ -83,7 +84,7 @@ const isLoadingReg = ref(false);
   <div style="height: 100%">
     <div class="box-title">Regression View</div>
     <a-row style="height: 450px" v-show="selectedGeo === 'China'">
-      <a-col :span="6" style="height: 100%; overflow: scroll">
+      <a-col :span="5" style="height: 100%; overflow: scroll">
         <h3 class="var">Variable Descriptions:</h3>
         <h3>• IV List</h3>
         <a-collapse ghost>
@@ -115,11 +116,7 @@ const isLoadingReg = ref(false);
           </a-collapse-panel>
         </a-collapse>
       </a-col>
-      <a-col :span="1"
-        ><a-divider type="vertical" style="height: 100%"
-      /></a-col>
-
-      <a-col :span="6">
+      <a-col :span="5">
         <div v-for="idx in [0, 1, 2]" :key="idx" class="var">
           <h3>
             <b>IV {{ idx + 1 }}</b>
@@ -152,7 +149,7 @@ const isLoadingReg = ref(false);
         >
       </a-col>
 
-      <a-col :span="11" id="regression">
+      <a-col :span="14" id="regression">
         <div style="text-align: center; margin-top: 50px" v-if="isLoadingReg">
           <a-spin :spinning="isLoadingReg" />
         </div>
@@ -170,9 +167,9 @@ const isLoadingReg = ref(false);
             <div>$$intercept: {{ regRes.value.intercept }}$$</div>
             <div v-for="(iv, idx) in regRes.value.iv" :key="idx">
               $$\hat{\beta_{{ idx + 1 }}}: {{ iv.coef }} \ ({{ iv.p }})
-              <template v-if="iv.p <= 0.001"> ***$$</template>
-              <template v-else-if="iv.p <= 0.01"> \color{red}{**}$$</template>
-              <template v-else-if="iv.p <= 0.05"> *$$</template>
+              <template v-if="iv.p <= 0.001"> \color{red}{* * *}$$</template>
+              <template v-else-if="iv.p <= 0.01"> \color{red}{* *}$$</template>
+              <template v-else-if="iv.p <= 0.05"> \color{red}{*}$$</template>
               <template v-else>$$</template>
             </div>
             <div style="text-align: right">
@@ -213,6 +210,6 @@ const isLoadingReg = ref(false);
   margin: 10px 0;
 }
 .var-selector {
-  width: 180px;
+  width: 140px;
 }
 </style>
