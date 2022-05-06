@@ -174,12 +174,8 @@ onMounted(() => {
       @ok="() => (showSectionInfo = false)"
     >
       <p>
-        Firstly, we split the posts into words by using the
-        <a href="https://github.com/lancopku/pkuseg-python">Pkuseg</a> package,
-        a multi-domain Chinese word segmentation tool. We used the “Web” domain
-        in the Pkuseg package to segment the Weibo posts. For the Word
-        Divergence Analysis, we calculated the top 30 frequent words in each
-        province by the two labels and calculated their
+        • For the Word Divergence Analysis, we calculated the top 30 frequent
+        words in each province by the two labels and calculated their
         <a
           href="https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence"
           >Jensen-Shannon divergence</a
@@ -188,15 +184,12 @@ onMounted(() => {
         <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)"
           >Shannon index</a
         >.
-      </p>
-      <p>
-        In the word divergence plot, the bars to the left and right indicate the
-        prevalence of a word in the label #Sexism or #Non-sexism. The height of
-        each bar represents a word’s positive percentages of the total
-        divergence calculated by the JSD model. For each word, Lighter shading
-        indicates the contribution is due to one or several posts, and darker
-        shading indicates the contribution of the word results from many
-        different tweets.
+        <br />
+        • The word’s positive percentage of the total divergence is encoded as
+        the height of the bar. <br />• The word's diversity is encoded as the
+        shading of the bar. Lighter shading indicates the contribution is due to
+        one or several posts, and darker shading indicates the contribution of
+        the word results from many different tweets.
       </p>
     </a-modal>
   </div>

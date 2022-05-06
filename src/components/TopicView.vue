@@ -166,17 +166,14 @@ onMounted(() => {
       @ok="() => (showSectionInfo = false)"
     >
       <p>
-        To explore the topics of all Weibo comments, we used LDA topic Modeling
-        to find the topic categories. Similarly, we split the sentences using
-        the Pkuseg package and applied the Genism package to run the LDA model.
-        Before running the topic model, we used the Coherence model in the
-        Genism package to find the best number of topics based on the coherence
-        score of topics in each model. For the convenience of presenting the
-        visualized results, we chose the topic number to be 12. In the topic
-        modeling plot, we presented the top 20 words of the 12 topics with word
-        probabilities (height). And we used the pyLDAvis package to show the
-        interactive visualization of topic models, you can view the interactive
-        report by clicking the “Interactive report” button.
+        • On the LDA topic bar chart, there are top 20 words of the 12 topics
+        with word probabilities. You can also view the interactive report by
+        clicking the “Interactive report” button. <br />
+        • We applied the Genism package to run the LDA model. Before running the
+        topic model, we used the Coherence model in the Genism package to find
+        the best number of topics based on the coherence score of topics in each
+        model. <br />• The word probability of each word is encoded as the height on
+        the bar chart
       </p>
     </a-modal>
   </div>
