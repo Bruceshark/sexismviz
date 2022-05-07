@@ -148,7 +148,7 @@ const showSectionInfo = ref(false);
           type="primary"
           @click="showResult"
           :disabled="
-            ivList.filter((x) => x === 'no').length === 3 || dv === 'no'
+            ivList.filter((x) => x === 'no').length === 4 || dv === 'no'
           "
           >Run Regression</a-button
         >
