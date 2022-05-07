@@ -3,7 +3,7 @@ import { reactive, ref, nextTick, onMounted, inject } from "vue";
 import regResList from "../assets/reg_results.json";
 import regVarDesc from "../assets/reg_var_desc.json";
 const selectedGeo = inject("selectedGeo");
-const ivList = ref(["Sentiment", "no", "no"]);
+const ivList = ref(["Sentiment", "no", "no", "no"]);
 const dv = ref("log(CommentNum)");
 const ivOptions = ref([
   { value: "Sentiment", label: "Sentiment" },
@@ -78,11 +78,17 @@ onMounted(() => {
 const regRes = reactive({});
 const regFormula = ref("");
 const isLoadingReg = ref(false);
+const showSectionInfo = ref(false);
 </script>
 
 <template>
   <div style="height: 100%">
-    <div class="box-title">Regression View</div>
+    <div class="box-header" style="justify-content: space-between">
+      <div class="box-title">Regression View</div>
+      <div class="question-logo" @click="() => (showSectionInfo = true)">
+        <img src="../assets/question.svg" />
+      </div>
+    </div>
     <a-row style="height: 450px" v-show="selectedGeo === 'China'">
       <a-col :span="5" style="height: 100%; overflow: scroll">
         <h3 class="var">Variable Descriptions:</h3>
@@ -117,7 +123,7 @@ const isLoadingReg = ref(false);
         </a-collapse>
       </a-col>
       <a-col :span="5">
-        <div v-for="idx in [0, 1, 2]" :key="idx" class="var">
+        <div v-for="idx in [0, 1, 2, 3]" :key="idx" class="var">
           <h3>
             <b>IV {{ idx + 1 }}</b>
           </h3>
@@ -128,7 +134,6 @@ const isLoadingReg = ref(false);
             @change="selectIV"
           />
         </div>
-        <br />
         <div class="var">
           <h3><b>DV</b></h3>
           <a-select
@@ -195,6 +200,29 @@ const isLoadingReg = ref(false);
       </svg>
       at the upper left corner to continue running regressions. <br />
     </div>
+    <a-modal
+      v-model:visible="showSectionInfo"
+      :footer="null"
+      title="Regression Analysis"
+      @ok="() => (showSectionInfo = false)"
+    >
+      <p>
+        • In this part, you can explore which and how the features of a Weibo
+        post are associated with the public reaction towards it.<br />
+        • For independent variables, we provide the post publisher's gender,
+        whether the post is labeled as sexist or not, the sentiment of the post,
+        and the log form of the post publisher's follower number. The sentiment
+        of each post is calculated by SnowNLP, a powerful python package built
+        for Chinese text sentiment analysis. We provide the log form of posts’
+        likeness, repost number, and comment number for dependent variables.
+        <br />
+        • You can choose the variables you want and click the "run regression"
+        button. Within a second, the intercept, coefficients, p-value and R
+        squared will appear on the screen. Besides, we also provide detailed
+        summary statistics of each variable for users’ references in the left
+        column.
+      </p>
+    </a-modal>
   </div>
 </template>
 
