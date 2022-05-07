@@ -76,12 +76,6 @@ const columns = [
     sorter: (a, b) => a.comment - b.comment,
   },
   {
-    title: "following",
-    dataIndex: "user_following",
-    key: "user_following",
-    sorter: (a, b) => a.user_following - b.user_following,
-  },
-  {
     title: "follower",
     dataIndex: "user_follower",
     key: "user_follower",
