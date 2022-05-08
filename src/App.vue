@@ -69,6 +69,15 @@ provide("updateSelectedGeo", updateSelectedGeo);
     >
       <h3>Project</h3>
       <p>This website is the final project of SOSC 4300 of Group 1.</p>
+      <p>
+        The website is built Vue.js and visualized by D3.js. The code can be
+        accessed
+        <a
+          href="https://github.com/Bruceshark/sosc4300_vis_frontend"
+          target="_window"
+          >here</a
+        >. Please give us a 🌟 if you like it!
+      </p>
       <h3>Team & Contribution</h3>
       <table>
         <tr>
@@ -81,7 +90,7 @@ provide("updateSelectedGeo", updateSelectedGeo);
         </tr>
         <tr>
           <td>LIU Junde</td>
-          <td>NLP model</td>
+          <td>NLP model training</td>
         </tr>
         <tr>
           <td>WANG Yiwei</td>
@@ -96,7 +105,7 @@ provide("updateSelectedGeo", updateSelectedGeo);
               >YU Yue</a
             >
           </td>
-          <td>Data visualization design & development</td>
+          <td>Data visualization & web development</td>
         </tr>
       </table>
     </a-modal>
@@ -171,7 +180,7 @@ provide("updateSelectedGeo", updateSelectedGeo);
         border-radius: 5px;
         padding: 0 5px;
         img {
-          width: 20px
+          width: 20px;
         }
       }
       .question-logo:hover {
