@@ -61,13 +61,25 @@ const drawMap = () => {
       d3.select("#" + newName).style("stroke-width", "3px");
     }
   };
-  const handleHoverGeo = (newName) => {
+  const handleHoverGeo = (eventData, newName) => {
     hoveredGeo.value = newName;
     if (newName === "China" || newName === "Overseas") {
       d3.select("#" + newName).style("fill", "gold");
     } else {
       d3.select("#" + newName).style("stroke-width", "3px");
     }
+
+    var yPosition = eventData.offsetY + 20;
+    var xPosition = eventData.offsetX + 20;
+    // 将浮层位置设置为鼠标位置
+    var tooltip = d3
+      .select(".tooltip")
+      .style("left", xPosition + "px")
+      .style("top", yPosition + "px");
+    // 更新浮层内容
+    tooltip.select(".name").text(newName + ": " + sexismRatioMap[newName]);
+    // 移除浮层hidden样式，展示浮层
+    tooltip.classed("hidden", false);
   };
   const handleHoverLeaveGeo = () => {
     if (hoveredGeo.value !== selectedGeo.value) {
@@ -80,6 +92,7 @@ const drawMap = () => {
         d3.select("#" + hoveredGeo.value).style("stroke-width", "0px");
       }
     }
+    d3.select(".tooltip").classed("hidden", true);
   };
   //   china map
   d3.select("#chinaMap")
@@ -99,7 +112,7 @@ const drawMap = () => {
       handleClickGeo(this.id);
     })
     .on("mouseover", function (d, i) {
-      handleHoverGeo(this.id);
+      handleHoverGeo(d, this.id);
     })
     .on("mouseout", function (d, i) {
       handleHoverLeaveGeo();
@@ -153,7 +166,7 @@ const drawMap = () => {
       }
     })
     .on("mouseover", function (d, i) {
-      handleHoverGeo(this.id);
+      handleHoverGeo(d, this.id);
     })
     .on("click", function (d, i) {
       handleClickGeo(this.id);
@@ -181,7 +194,18 @@ const showSectionInfo = ref(false);
       <div id="chinaMap"></div>
     </div>
     <div style="display: flex; justify-content: space-between">
-      <div>{{ hoveredGeo }}: {{ sexismRatioMap[hoveredGeo] }}</div>
+      <div style="display: flex; align-items: center">
+        <div
+          class="legend-square"
+          :style="'background-color: ' + mapMaxColor"
+        ></div>
+        <div>high Sexist ratio</div>
+        <div
+          class="legend-square"
+          :style="'background-color: ' + mapMinColor"
+        ></div>
+        <div>low Sexist ratio</div>
+      </div>
       <div style="font-weight: bold">selected region: {{ selectedGeo }}</div>
     </div>
     <a-modal
@@ -201,6 +225,9 @@ const showSectionInfo = ref(false);
         the darker shading indicates the higher sexist ratio.
       </p>
     </a-modal>
+    <div class="tooltip hidden">
+      <b class="name"></b>
+    </div>
   </div>
 </template>
 
@@ -208,5 +235,25 @@ const showSectionInfo = ref(false);
 .map-outer {
   width: 100%;
   height: 90%;
+}
+.legend-square {
+  width: 16px;
+  height: 16px;
+  margin: 0 4px;
+}
+.tooltip {
+  position: absolute;
+  height: auto;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  background-color: white;
+  border: 3px solid #c92268;
+  opacity: 0.9;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+.tooltip.hidden {
+  display: none;
 }
 </style>
