@@ -79,7 +79,7 @@ const drawChart = () => {
       .append("text")
       .text(ele.topic)
       .attr("x", function (d, i) {
-        0;
+        return 0;
       })
       .attr("y", function (d) {
         return (
@@ -172,8 +172,8 @@ onMounted(() => {
         • We applied the Genism package to run the LDA model. Before running the
         topic model, we used the Coherence model in the Genism package to find
         the best number of topics based on the coherence score of topics in each
-        model. <br />• The word probability of each word is encoded as the height on
-        the bar chart
+        model. <br />• The word probability of each word is encoded as the
+        height on the bar chart
       </p>
     </a-modal>
   </div>

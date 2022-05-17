@@ -1,4 +1,5 @@
 <script setup>
+import * as d3 from "d3";
 import { reactive, ref, nextTick, onMounted, inject } from "vue";
 import regResList from "../assets/reg_results.json";
 import regVarDesc from "../assets/reg_var_desc.json";
@@ -41,7 +42,6 @@ const showResult = async () => {
   const ivResList = validIVList.map((iv) => {
     return validRegRes.iv.filter((ele) => ele.name === iv)[0];
   });
-  console.log(ivResList);
   validRegRes.iv = ivResList;
   regRes.value = validRegRes;
   const formula =
@@ -56,7 +56,6 @@ const showResult = async () => {
       .join("+") +
     "$$";
   regFormula.value = formula;
-  console.log(validRegRes);
   isLoadingReg.value = true;
   setTimeout(async () => {
     isLoadingReg.value = false;
@@ -66,10 +65,79 @@ const showResult = async () => {
       MathJax.Hub,
       document.getElementById("regression"),
     ]);
+    drawPlot();
   }, 500);
-  //   isLoadingReg.value = false;
-  //   setTimeout(() => {
-  //   }, 1000);
+};
+const drawPlot = () => {
+  const dataset = regRes.value.iv.map((v, idx) => {
+    return [idx, v.coef, v.p, v.std];
+  });
+  const svg = d3.select("#coef-plot");
+  const padding = 10;
+  const width = svg.attr("width") - 2 * padding;
+  const height = svg.attr("height") - 2 * padding;
+  const xScale = d3.scaleLinear().domain([-0.5, 0.5]).range([0, width]);
+  const yScale = d3
+    .scaleLinear()
+    .domain([dataset.length, -1])
+    .range([height, 0]);
+  svg
+    .append("g")
+    .attr("transform", "translate(" + padding + " ," + height + ")")
+    .call(d3.axisBottom(xScale));
+  svg
+    // .select("bar")
+    .append("rect")
+    .attr("x", width / 2 + padding - 1)
+    .attr("y", padding)
+    .attr("height", height - padding)
+    .attr("width", 2)
+    .style("fill", "#d3d3d3");
+  const plots = svg.append("g").selectAll("dot").data(dataset).enter();
+  plots
+    .append("circle")
+    .attr("cx", function (d) {
+      return xScale(d[1]) + padding;
+    })
+    .attr("cy", function (d) {
+      return yScale(d[0]) + padding;
+    })
+    .attr("r", 5)
+    .style("fill", function (d, i) {
+      const p = d[2];
+      if (p <= 0.001) return "#CC0000";
+      if (p <= 0.01) return "#cc3939";
+      if (p <= 0.05) return "#c95757";
+      return "#cfabab";
+    });
+  plots
+    .append("rect")
+    .attr("x", function (d) {
+      return xScale(d[1] - d[3]) + padding;
+    })
+    .attr("y", function (d) {
+      return yScale(d[0]) - 0.5 + padding;
+    })
+    .attr("width", function (d) {
+      return 2 * (xScale(d[1]) - xScale(d[1] - d[3]));
+    })
+    .attr("height", 2)
+    .style("fill", function (d, i) {
+      const p = d[2];
+      if (p <= 0.001) return "#CC0000";
+      if (p <= 0.01) return "#cc3939";
+      if (p <= 0.05) return "#c95757";
+      return "#cfabab";
+    });
+  plots
+    .append("text")
+    .text(function (d, i) {
+      return ivList.value.filter((iv) => iv !== "no")[i];
+    })
+    .attr("x", 0)
+    .attr("y", function (d, i) {
+      return yScale(i) + padding + 5;
+    });
 };
 onMounted(() => {
   selectIV();
@@ -167,19 +235,33 @@ const showSectionInfo = ref(false);
             <b>Results of Regression</b>
           </h3>
           <div v-if="Object.keys(regRes).length > 0" style="text-align: left">
-            <div>$${R}^2: {{ regRes.value.r2 }}$$</div>
-            <div>$$adjusted \ {R}^2: {{ regRes.value.r2_adjusted }}$$</div>
-            <div>$$intercept: {{ regRes.value.intercept }}$$</div>
-            <div v-for="(iv, idx) in regRes.value.iv" :key="idx">
-              $$\hat{\beta_{{ idx + 1 }}}: {{ iv.coef }} \ ({{ iv.p }})
-              <template v-if="iv.p <= 0.001"> \color{red}{* * *}$$</template>
-              <template v-else-if="iv.p <= 0.01"> \color{red}{* *}$$</template>
-              <template v-else-if="iv.p <= 0.05"> \color{red}{*}$$</template>
-              <template v-else>$$</template>
+            <div>
+              $${R}^2:{{ regRes.value.r2 }} \qquad adjusted \ {R}^2:{{
+                regRes.value.r2_adjusted
+              }}
+              \qquad Intercept: {{ regRes.value.intercept }}$$
+            </div>
+            <div>
+              $$
+              <template v-for="(iv, idx) in regRes.value.iv" :key="idx">
+                \hat{\beta_{{ idx + 1 }}}: {{ iv.coef }} \
+                <template v-if="iv.p <= 0.001">
+                  \color{red}{* * *} \qquad</template
+                >
+                <template v-else-if="iv.p <= 0.01">
+                  \color{red}{* *} \qquad</template
+                >
+                <template v-else-if="iv.p <= 0.05">
+                  \color{red}{*} \qquad</template
+                >
+                <template v-else>\qquad</template>
+              </template>
+              $$
             </div>
             <div style="text-align: right">
               <i>note: *: P ≤ 0.05; **: P ≤ 0.01; ***: P ≤ 0.001</i>
             </div>
+            <svg width="580" height="200" id="coef-plot"></svg>
           </div>
         </div>
       </a-col>
